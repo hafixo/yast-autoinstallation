@@ -77,5 +77,17 @@ describe Y2Autoinstallation::Clients::Autoyast do
         end
       end
     end
+
+    describe "'list-modules' command" do
+      let(:args) { ["list-modules"] }
+
+      it "displays the list of supported modules" do
+        expect(Yast::UI).to receive(:OpenDialog) do |_opts, content, *_buttons|
+          name = Yast::Profile.ModuleMap["add-on"]["Name"]
+          expect(content.to_s).to include("add-on - #{name}")
+        end
+        client.main
+      end
+    end
   end
 end
